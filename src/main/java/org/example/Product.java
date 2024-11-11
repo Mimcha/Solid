@@ -27,6 +27,6 @@ class Product {
 
     @Override
     public String toString() {
-        return name + " - " + price + " (by " + manufacturer + ")";
+        return name + " - " + price + " (от " + manufacturer + ")";
     }
 }

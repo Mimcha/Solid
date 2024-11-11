@@ -11,8 +11,8 @@ class OrderTracking {
     }
 
     public void trackOrder(int orderId) {
-        String status = orderStatuses.getOrDefault(orderId, "Order not found.");
-        System.out.println("Order ID: " + orderId + " - Status: " + status);
+        String status = orderStatuses.getOrDefault(orderId, "Заказ не найден.");
+        System.out.println("ID заказа: " + orderId + " - Статус: " + status);
     }
 
     public void updateOrderStatus(int orderId, String status) {

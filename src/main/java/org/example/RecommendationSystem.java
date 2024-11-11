@@ -13,7 +13,7 @@ class RecommendationSystem {
     public List<String> recommendProducts() {
         List<String> recommendations = new ArrayList<>();
         for (String product : ratingSystem.getAllRatings().keySet()) {
-            if (ratingSystem.getRating(product) != null && ratingSystem.getRating(product) >= 4.0) {
+            if (ratingSystem.getRating(product) != null && ratingSystem.getRating(product) > 4.0) {
                 recommendations.add(product);
             }
         }

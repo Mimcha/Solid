@@ -3,6 +3,7 @@ package org.example;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class RatingSystem {
     // Хранит рейтинги продуктов
     private Map<String, Double> ratings;
@@ -14,7 +15,7 @@ public class RatingSystem {
     // Метод для добавления или обновления рейтинга продукта
     public void addRating(String productName, double rating) {
         if (rating < 0 || rating > 5) {
-            throw new IllegalArgumentException("Rating must be between 0 and 5.");
+            throw new IllegalArgumentException("Рейтинг должен быть от 0 до 5.");
         }
         ratings.put(productName, rating);
     }
@@ -30,7 +31,7 @@ public class RatingSystem {
             System.out.println("No ratings available.");
         } else {
             for (Map.Entry<String, Double> entry : ratings.entrySet()) {
-                System.out.println(entry.getKey() + " - Rating: " + entry.getValue());
+                System.out.println(entry.getKey() + " - Рейтинг: " + entry.getValue());
             }
         }
     }

@@ -1,14 +1,19 @@
 package org.example;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
+
+
 public class Shop {
     private static final int EXIT_OPTION = 8;
     private static Scanner scanner = new Scanner(System.in);
-    private static ProductCatalog catalog = new ProductCatalog();
+    static ProductCatalog catalog = new ProductCatalog();
     private static Cart cart = new Cart();
     private static OrderTracking orderTracking = new OrderTracking();
     private static RatingSystem ratingSystem = new RatingSystem();
     private static RecommendationSystem recommendationSystem = new RecommendationSystem(ratingSystem);
+    private static OrderManager orderManager = new OrderManager();
 
     public static void main(String[] args) {
 
@@ -28,34 +33,84 @@ public class Shop {
             scanner.nextLine(); // consume newline
 
             switch (choice) {
-                case 1:catalog.showProducts();
+                case 1:
+                    catalog.showProducts();
                     break;
                 case 2:
                     filterProduct();
                     break;
                 case 3:
                     workingWithCart();
-                   break;
+                    break;
                 case 4:
                     System.out.println("Введите трэк ID : ");
                     int orderId = scanner.nextInt();
                     orderTracking.trackOrder(orderId);
                     break;
                 case 5:
-                    System.out.print("Введите трэк ID : ");
-                    returnProduct(scanner);
+                    //Возврат заказа, повтороение заказа
+                    refundRepeatOrder();
                     break;
                 case 6:
+                    //Система рейтинга
                     System.out.print("Система рейтинга: ");
+                    ratingSystem();
                     break;
                 case 7:
+                    //Рекомендации
                     System.out.print("Рекомендации: ");
+                    catalog.displayRecommendedProducts();
                     break;
                 case EXIT_OPTION:
-                    System.out.println("Exiting...");
+                    System.out.println("Выход...");
                     return;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println("Неверная опция.");
+            }
+        }
+    }
+
+    private static void ratingSystem() {
+
+        // Отображаем продукты с рейтингами
+        System.out.println("Product Catalog:");
+        catalog.displayProductsWithRatings();
+
+    }
+
+    private static void refundRepeatOrder() {
+        // Создание заказа
+        List<String> items = new ArrayList<>();
+        items.add("Позиция 1");
+        items.add("Позиция 2");
+        Order order1 = new Order("123", items, 900);
+        orderManager.addOrder(order1);
+
+        System.out.println("Работа с заказом: ");
+        System.out.println("1. Печать всех заказов: ");
+        System.out.println("2. Повтор заказа: ");
+        System.out.println("3. Возврат заказа: ");
+        while (true) {
+            int workOrder = scanner.nextInt();
+            scanner.nextLine();
+            switch (workOrder) {
+                case 1:
+                    // Печать всех заказов
+                    orderManager.printOrders();
+                    break;
+                case 2:
+                    // Повторение заказа
+                    Order newOrder = orderManager.repeatOrder("123");
+                    if (newOrder != null) {
+                        System.out.println("Создан новый заказ: " + newOrder);
+                    }
+                    break;
+                case 3:
+                    // Возврат заказа
+                    orderManager.returnOrder("123");
+                    break;
+                default:
+                    System.out.println("Неверный вариант. Пожалуйста, попробуйте снова.");
             }
         }
     }
@@ -68,6 +123,7 @@ public class Shop {
             System.out.println(product);
         }
     }
+
     private static Product filterProduct(String keyword) {
         List<Product> filteredProducts = catalog.filterByKeyword(keyword);
         for (Product product : filteredProducts) {
@@ -125,20 +181,7 @@ public class Shop {
             System.out.println("Товар не найден.");
         }
     }
-    private static void returnProduct(Scanner scanner) {
-        System.out.println("оиск товара для возврата:");
-        String productName = scanner.nextLine();
-        Product productToReturn = filterProduct(productName);
-        // Здесь вы можете добавить логику для поиска продукта в корзине
 
-        if (productToReturn != null) {
-            //cart.returnProduct(productToReturn);
-            // Логика добавления продукта обратно в каталог (если необходимо)
-            //catalog.addProduct(productToReturn); // Добавьте метод addProduct в ProductCatalog
-        } else {
-            System.out.println("Product not found in cart.");
-        }
-    }
 }
-}
+
 
